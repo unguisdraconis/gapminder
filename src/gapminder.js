@@ -938,7 +938,7 @@ export const data = [
     gdpPercap: 33203.26128,
   },
   {
-    country: "United ys",
+    country: "United States",
     continent: "Americas",
     lifeExp: 78.242,
     pop: 301139947,
