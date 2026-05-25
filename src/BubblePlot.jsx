@@ -14,7 +14,7 @@ import { AxisLeft } from "./AxisLeft";
 // ---------- Dimensions ----------
 const width = 960;
 const height = 600;
-const margin = { top: 60, right: 40, bottom: 60, left: 90 };
+const margin = { top: 100, right: 40, bottom: 60, left: 90 };
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
 
@@ -94,6 +94,7 @@ const BubblePlot = () => {
         {/* Axes */}
         <AxisTop
           xScale={xScale}
+          pixelsPerTick={1000}
           innerHeight={innerHeight}
           tickFormat={xTickFormat}
         />

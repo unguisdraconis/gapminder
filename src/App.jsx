@@ -1,5 +1,12 @@
+import React from "react";
 import BubblePlot from "./BubblePlot";
 
 function App() {
-  return <BubblePlot />;
+  return (
+    <div>
+      <BubblePlot />
+    </div>
+  );
 }
+
+export default App;
