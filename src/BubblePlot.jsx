@@ -13,18 +13,18 @@ import { AxisLeft } from "./AxisLeft";
 
 // ---------- Dimensions ----------
 const width = 960;
-const height = 600;
-const margin = { top: 200, right: 40, bottom: 60, left: 90 };
+const height = 700;
+const margin = { top: 185, right: 40, bottom: 60, left: 90 };
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
 
 // ---------- Continent color palette ----------
 const continentColors = {
-  Africa: "#e6854a",
-  Americas: "#4daf4a",
-  Asia: "#e04b5a",
-  Europe: "#377eb8",
-  Oceania: "#984ea3",
+  Africa: "#E69F00 ",
+  Americas: "#009E73  ",
+  Asia: "#D55E00",
+  Europe: "#0072B2 ",
+  Oceania: "#CC79A7 ",
 };
 
 const continents = Object.keys(continentColors);
@@ -100,7 +100,7 @@ const BubblePlot = () => {
             color: "#666",
             textAlign: "left",
             lineHeight: "1.4",
-            paddingTop: "4px",
+            paddingTop: "10px",
           }}
         >
           This vizualization provides an exploration of global development
@@ -191,6 +191,124 @@ const BubblePlot = () => {
           ))}
         </g>
 
+        {(() => {
+          const largestPerContinent = continents.map((continent) => {
+            return data
+              .filter((d) => d.continent === continent)
+              .sort((a, b) => b.pop - a.pop)[0];
+          });
+
+          // Compute initial label positions
+          const labels = largestPerContinent.map((d) => {
+            const cx = xScale(d.gdpPercap);
+            const cy = yScale(d.lifeExp);
+            const r = rScale(d.pop);
+            const displayName =
+              d.country === "United States" ? "USA" : d.country;
+
+            return {
+              ...d,
+              cx,
+              cy,
+              r,
+              labelX: cx,
+              labelY: cy - r - 10,
+              displayName,
+              width: displayName.length * 6.5, // approximate text width
+              height: 14, // approximate text height
+            };
+          });
+
+          // Simple iterative repulsion — push overlapping labels apart
+          const iterations = 50;
+          for (let iter = 0; iter < iterations; iter++) {
+            for (let i = 0; i < labels.length; i++) {
+              for (let j = i + 1; j < labels.length; j++) {
+                const a = labels[i];
+                const b = labels[j];
+
+                const overlapX =
+                  a.width / 2 + b.width / 2 + 6 - Math.abs(a.labelX - b.labelX);
+                const overlapY =
+                  a.height / 2 +
+                  b.height / 2 +
+                  2 -
+                  Math.abs(a.labelY - b.labelY);
+
+                if (overlapX > 0 && overlapY > 0) {
+                  // Push apart on whichever axis has less overlap
+                  if (overlapX < overlapY) {
+                    const pushX = overlapX / 2 + 1;
+                    if (a.labelX < b.labelX) {
+                      a.labelX -= pushX;
+                      b.labelX += pushX;
+                    } else {
+                      a.labelX += pushX;
+                      b.labelX -= pushX;
+                    }
+                  } else {
+                    const pushY = overlapY / 2 + 1;
+                    if (a.labelY < b.labelY) {
+                      a.labelY -= pushY;
+                      b.labelY += pushY;
+                    } else {
+                      a.labelY += pushY;
+                      b.labelY -= pushY;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          return labels.map((d) => (
+            <g key={d.country}>
+              {/* Leader line */}
+              <line
+                x1={d.cx}
+                y1={d.cy - d.r}
+                x2={d.labelX}
+                y2={d.labelY + 4}
+                stroke="#999"
+                strokeWidth={0.75}
+              />
+              {/* White halo */}
+              <text
+                x={d.labelX}
+                y={d.labelY}
+                textAnchor="middle"
+                style={{
+                  fontSize: "10px",
+                  fontFamily: "sans-serif",
+                  fontWeight: 500,
+                  stroke: "white",
+                  strokeWidth: 3,
+                  strokeLinejoin: "round",
+                  fill: "white",
+                  pointerEvents: "none",
+                }}
+              >
+                {d.displayName}
+              </text>
+              {/* Label */}
+              <text
+                x={d.labelX}
+                y={d.labelY}
+                textAnchor="middle"
+                style={{
+                  fontSize: "10px",
+                  fontFamily: "sans-serif",
+                  fill: "#333",
+                  fontWeight: 500,
+                  pointerEvents: "none",
+                }}
+              >
+                {d.displayName}
+              </text>
+            </g>
+          ));
+        })()}
+
         {/* ---------- Population size legend ---------- */}
         <g transform={`translate(${innerWidth - 140}, ${innerHeight - 240})`}>
           <text
@@ -237,7 +355,8 @@ const BubblePlot = () => {
         }}
       >
         Source: Based on free material from GAPMINDER.ORG, CC-BY LICENSE |
-        Visualization by Jeremiah King
+        Visualization by Jeremiah King as part of D3 Loves React course taught
+        by Yan Holtz
       </text>
     </svg>
   );
