@@ -14,7 +14,7 @@ import { AxisLeft } from "./AxisLeft";
 // ---------- Dimensions ----------
 const width = 960;
 const height = 600;
-const margin = { top: 120, right: 40, bottom: 60, left: 90 };
+const margin = { top: 200, right: 40, bottom: 60, left: 90 };
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
 
@@ -91,23 +91,26 @@ const BubblePlot = () => {
       </text>
 
       {/* Introduction & Description */}
-      <text
-        x={width / 2}
-        y={40}
-        textAnchor="middle"
-        style={{
-          fontSize: "10px",
-          fontFamily: "sans-serif",
-          fill: "#999",
-        }}
-      >
-        The Gapminder dataset vizualization provides an exploration of global
-        development indicators, such as life expectancy, GDP per capita, and
-        population size across various countries and regions. A logarithmic
-        scale is employed for GDP per capita to effectively manage the wide
-        range of values, allowing for clearer comparisons between nations with
-        vastly different economic outputs.
-      </text>
+      <foreignObject x={margin.left} y={28} width={innerWidth} height={100}>
+        <div
+          xmlns="http://www.w3.org/1999/xhtml"
+          style={{
+            fontsize: "11px",
+            fontfamily: "sans-serif",
+            color: "#666",
+            textAlign: "left",
+            lineHeight: "1.4",
+            paddingTop: "4px",
+          }}
+        >
+          This vizualization provides an exploration of global development
+          indicators, such as life expectancy, GDP per capita, and population
+          size across various countries and regions. A logarithmic scale is
+          employed for GDP per capita to effectively manage the wide range of
+          values, allowing for clearer comparisons between nations with vastly
+          different economic outputs.
+        </div>
+      </foreignObject>
 
       <g transform={`translate(${margin.left},${margin.top})`}>
         {/* Axes */}
