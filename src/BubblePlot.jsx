@@ -14,7 +14,7 @@ import { AxisLeft } from "./AxisLeft";
 // ---------- Dimensions ----------
 const width = 960;
 const height = 600;
-const margin = { top: 100, right: 40, bottom: 60, left: 90 };
+const margin = { top: 120, right: 40, bottom: 60, left: 90 };
 const innerWidth = width - margin.left - margin.right;
 const innerHeight = height - margin.top - margin.bottom;
 
@@ -88,6 +88,25 @@ const BubblePlot = () => {
         style={{ fontSize: "18px", fontWeight: 600, fill: "#333" }}
       >
         Gapminder: GDP per Capita vs Life Expectancy
+      </text>
+
+      {/* Introduction & Description */}
+      <text
+        x={width / 2}
+        y={40}
+        textAnchor="middle"
+        style={{
+          fontSize: "10px",
+          fontFamily: "sans-serif",
+          fill: "#999",
+        }}
+      >
+        The Gapminder dataset vizualization provides an exploration of global
+        development indicators, such as life expectancy, GDP per capita, and
+        population size across various countries and regions. A logarithmic
+        scale is employed for GDP per capita to effectively manage the wide
+        range of values, allowing for clearer comparisons between nations with
+        vastly different economic outputs.
       </text>
 
       <g transform={`translate(${margin.left},${margin.top})`}>
