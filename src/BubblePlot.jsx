@@ -94,7 +94,6 @@ const BubblePlot = () => {
         {/* Axes */}
         <AxisTop
           xScale={xScale}
-          pixelsPerTick={1000}
           innerHeight={innerHeight}
           tickFormat={xTickFormat}
         />
@@ -204,6 +203,20 @@ const BubblePlot = () => {
           })}
         </g>
       </g>
+      {/* Sources & Credits */}
+      <text
+        x={width / 2}
+        y={height - 8}
+        textAnchor="middle"
+        style={{
+          fontSize: "10px",
+          fontFamily: "sans-serif",
+          fill: "#999",
+        }}
+      >
+        Source: Based on free material from GAPMINDER.ORG, CC-BY LICENSE |
+        Visualization by Jeremiah King
+      </text>
     </svg>
   );
 };
